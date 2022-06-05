@@ -46,7 +46,7 @@ async function runApp() {
 }
 
 process.on('uncaughtException', function (err) {
-  console.error('[UNHANDLED]', err);
-});
+  console.error('[UNHANDLED]', err)
+})
 
 void runApp()
