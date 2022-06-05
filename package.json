@@ -5,8 +5,8 @@
   "main": "dist/app.js",
   "author": "Shugaev <alek-2020@yandex.ru>",
   "scripts": {
-    "build": "npm build-ts && node dist/app.js",
-    "start": "tsc-watch --skipLibCheck --onSuccess 'node dist/app.js'",
+    "start:no-watch": "rimraf dist && npm run build-ts && node dist/app.js",
+    "start": "tsc-watch --skipLibCheck --onSuccess 'rm -rf dist && node dist/app.js'",
     "build-ts": "tsc --skipLibCheck",
     "pretty": "prettier --check src",
     "lint": "npm pretty && eslint --max-warnings 0 --ext ts,tsx,json src"
@@ -19,7 +19,8 @@
     "envalid": "^7.2.2",
     "grammy": "^1.8.3",
     "grammy-middlewares": "^1.0.11",
-    "mongoose": "^6.3.5"
+    "mongoose": "^6.3.5",
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {
     "@typegoose/typegoose": "^9.3.1",
