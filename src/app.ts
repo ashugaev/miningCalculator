@@ -3,6 +3,7 @@ import 'reflect-metadata'
 import 'source-map-support/register'
 
 import { handleHelp } from '@/handlers/help'
+import { handleMining } from '@/handlers/mining'
 import { handleRoadmap } from '@/handlers/roadmap'
 import { handleStart } from '@/handlers/start'
 import { ignoreOld, sequentialize } from 'grammy-middlewares'
@@ -32,6 +33,7 @@ async function runApp() {
   bot.command(['help'], handleHelp)
   bot.command(['start'], handleStart)
   bot.command(['roadmap'], handleRoadmap)
+  bot.command('mining', handleMining)
 
   // Errors
   bot.catch(console.error)
@@ -42,5 +44,9 @@ async function runApp() {
   run(bot)
   console.info(`Bot ${bot.botInfo.username} is up and running`)
 }
+
+process.on('uncaughtException', function (err) {
+  console.error('[UNHANDLED]', err);
+});
 
 void runApp()

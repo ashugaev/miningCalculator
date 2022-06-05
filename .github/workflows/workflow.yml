@@ -14,4 +14,4 @@ jobs:
       - name: Compile code
         run: yarn tsc --skipLibCheck
       - name: Lint code
-        run: yarn lint
+        run: npm run lint
