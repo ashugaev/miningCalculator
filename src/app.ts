@@ -12,6 +12,7 @@ import i18n from '@/helpers/i18n'
 import languageMenu from '@/menus/language'
 import sendHelp from '@/handlers/help'
 import startMongo from '@/helpers/startMongo'
+import {handleMining} from "@/handlers/mining";
 
 async function runApp() {
   console.log('Starting app...')
@@ -30,6 +31,7 @@ async function runApp() {
   // Commands
   bot.command(['help', 'start'], sendHelp)
   bot.command('language', handleLanguage)
+  bot.command('mining', handleMining)
   // Errors
   bot.catch(console.error)
   // Start bot
@@ -37,5 +39,9 @@ async function runApp() {
   run(bot)
   console.info(`Bot ${bot.botInfo.username} is up and running`)
 }
+
+process.on('uncaughtException', function (err) {
+  console.error('[UNHANDLED]', err);
+});
 
 void runApp()
