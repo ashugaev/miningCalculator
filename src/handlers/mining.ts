@@ -1,3 +1,4 @@
+import { ALLOWED_COINS, ALLOWED_COINS_STRING } from '@/constants'
 import { calcMiningProfitInDollars } from '@/helpers/calcMiningProfitInDollars'
 import { getCachedMiningData } from '@/helpers/getCachedMiningData'
 import Context from '@/models/Context'
@@ -9,21 +10,27 @@ const SECONDS_IN = {
   month: 24 * 60 * 60 * 30,
 }
 
-const ALLOWED_COINS = ['BTC', 'ETH', 'LTC']
-
 export const handleMining = async (ctx: Context) => {
   const text = ctx.message?.text
 
   const params = text?.match(/^\/mining ([a-z]+) (\d+)$/i)
 
   if (!params) {
-    return ctx.replyWithLocalization('miningInputError', sendOptions(ctx))
+    return ctx.reply(
+      ctx.i18n.t('miningInputError', { ALLOWED_COINS_STRING }),
+      sendOptions(ctx)
+    )
   }
 
-  // (btc|ltc|eth)
-
-  const ticker = params[1]
+  const ticker = params[1].toUpperCase()
   const megaHashCount = Number(params[2])
+
+  if (!ALLOWED_COINS.includes(ticker)) {
+    return ctx.reply(
+      ctx.i18n.t('miningCoinError', { ALLOWED_COINS_STRING }),
+      sendOptions(ctx)
+    )
+  }
 
   const coinData = await getCachedMiningData(ticker)
 
@@ -43,7 +50,6 @@ export const handleMining = async (ctx: Context) => {
     SECONDS_IN.month
   )
 
-  //   return ctx.reply(dayProfit + ' ' + weekProfit + ' ' + monthProfit + ' $')
   return ctx.reply(
     ctx.i18n.t('miningResult', {
       dayProfit,
