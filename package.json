@@ -6,7 +6,7 @@
   "author": "Shugaev <alek-2020@yandex.ru>",
   "scripts": {
     "start:no-watch": "rimraf dist && npm run build-ts && node dist/app.js",
-    "start": "tsc-watch --skipLibCheck --onSuccess 'rm -rf dist && node dist/app.js'",
+    "start": "tsc-watch --skipLibCheck --onSuccess 'rimraf dist && node dist/app.js'",
     "build-ts": "tsc --skipLibCheck",
     "pretty": "prettier --check src",
     "lint": "npm pretty && eslint --max-warnings 0 --ext ts,tsx,json src"
