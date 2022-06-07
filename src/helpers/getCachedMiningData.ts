@@ -19,6 +19,5 @@ export const getCachedMiningData = async (
   const result = miningData.find(
     (el: MiningData) => el.coin === coin.toUpperCase()
   )
-
   return result === undefined ? null : result
 }
