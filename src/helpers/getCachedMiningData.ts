@@ -12,8 +12,13 @@ export const getCachedMiningData = async (
   let miningData: MiningData[] | undefined = myCache.get('miningData')
 
   if (miningData === undefined) {
-    miningData = await getMiningData()
-    myCache.set('miningData', miningData)
+    try {
+      miningData = await getMiningData()
+      myCache.set('miningData', miningData)
+    } catch (e) {
+      console.error('[GET CACHED MINING DATA]', e)
+      return null
+    }
   }
 
   const result = miningData.find(

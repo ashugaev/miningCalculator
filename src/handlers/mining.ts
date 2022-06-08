@@ -1,5 +1,6 @@
 import { ALLOWED_COINS, ALLOWED_COINS_STRING } from '@/constants'
 import { calcMiningProfitInDollars } from '@/helpers/calcMiningProfitInDollars'
+import { commandWrapper } from '@/helpers/commandWrapper'
 import { getCachedMiningData } from '@/helpers/getCachedMiningData'
 import Context from '@/models/Context'
 import sendOptions from '@/helpers/sendOptions'
@@ -10,7 +11,7 @@ const SECONDS_IN = {
   month: 24 * 60 * 60 * 30,
 }
 
-export const handleMining = async (ctx: Context) => {
+export const handleMining = commandWrapper(async (ctx: Context) => {
   const text = ctx.message?.text
 
   const params = text?.match(/^\/mining ([a-z]+) (\d+)$/i)
@@ -39,11 +40,13 @@ export const handleMining = async (ctx: Context) => {
     megaHashCount,
     SECONDS_IN.day
   )
+
   const weekProfit = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
     SECONDS_IN.week
   )
+
   const monthProfit = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
@@ -59,4 +62,4 @@ export const handleMining = async (ctx: Context) => {
     }),
     sendOptions(ctx)
   )
-}
+})

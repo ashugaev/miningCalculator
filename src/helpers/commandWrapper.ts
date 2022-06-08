@@ -1,0 +1,15 @@
+import { Message } from 'grammy/out/platform.node'
+import Context from '@/models/Context'
+
+export function commandWrapper(
+  callback: (ctx: Context) => Promise<Message.TextMessage>
+) {
+  return async (ctx: Context) => {
+    try {
+      await callback(ctx)
+    } catch (e) {
+      void ctx.reply(ctx.i18n.t('unrecognizedError'))
+      console.error('[COMMAND WRAPPER]', e)
+    }
+  }
+}

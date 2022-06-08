@@ -36,7 +36,9 @@ async function runApp() {
   bot.command('mining', handleMining)
 
   // Errors
-  bot.catch(console.error)
+  bot.catch((e) => {
+    console.error('[UNHANDLED APP ERROR]', e)
+  })
 
   // Start bot
   await bot.init()

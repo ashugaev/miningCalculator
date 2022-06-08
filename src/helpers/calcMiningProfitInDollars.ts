@@ -19,6 +19,6 @@ export const calcMiningProfitInDollars = (
   const hashForATimePeriod = megaHashForATimePeriod * 1000000
   const revenueInCrypto = hashForATimePeriod / networkHashRateSha256
   const revenueInDollars = revenueInCrypto * coinsData.price
-
-  return revenueInDollars
+  const revenuePrecise = Number(revenueInDollars.toFixed(2))
+  return revenuePrecise
 }
