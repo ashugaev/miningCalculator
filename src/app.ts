@@ -2,18 +2,24 @@ import 'module-alias/register'
 import 'reflect-metadata'
 import 'source-map-support/register'
 
+import { handleAds } from '@/handlers/ads'
 import { handleHelp } from '@/handlers/help'
 import { handleMining } from '@/handlers/mining'
 import { handleRoadmap } from '@/handlers/roadmap'
 import { handleStart } from '@/handlers/start'
 import { ignoreOld, sequentialize } from 'grammy-middlewares'
 import { run } from '@grammyjs/runner'
+import { session } from 'grammy'
 import attachUser from '@/middlewares/attachUser'
 import bot from '@/helpers/bot'
 import configureI18n from '@/middlewares/configureI18n'
 import i18n from '@/helpers/i18n'
 import languageMenu from '@/menus/language'
 import startMongo from '@/helpers/startMongo'
+
+export interface SessionData {
+  step: 'idle' | 'adsMessage'
+}
 
 async function runApp() {
   console.log('Starting app...')
@@ -27,13 +33,16 @@ async function runApp() {
     .use(attachUser)
     .use(i18n.middleware())
     .use(configureI18n)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    .use(session({ initial: (): SessionData => ({ step: 'idle' }) }))
     // Menus
     .use(languageMenu)
   // Commands
   bot.command(['help'], handleHelp)
   bot.command(['start'], handleStart)
   bot.command(['roadmap'], handleRoadmap)
-  bot.command('mining', handleMining)
+  bot.command(['mining'], handleMining)
+  bot.command(['ads'], handleAds)
 
   // Errors
   bot.catch((e) => {
