@@ -26,34 +26,28 @@ export const router = new Router<Context>((ctx) => ctx.session.step)
 import { handleAds } from '@/handlers/ads'
 async function runApp() {
   console.log('Starting app...')
-  // Mongo
   await startMongo()
   console.log('Mongo connected')
   bot
-    // Middlewares
     .use(sequentialize())
     .use(ignoreOld())
     .use(attachUser)
     .use(i18n.middleware())
     .use(configureI18n)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     .use(session({ initial: (): SessionData => ({ step: 'idle' }) }))
     .use(router)
-    // Menus
     .use(languageMenu)
-  // Commands
+
   bot.command(['help'], handleHelp)
   bot.command(['start'], handleStart)
   bot.command(['roadmap'], handleRoadmap)
   bot.command(['mining'], handleMining)
   bot.command(['ads'], handleAds)
 
-  // Errors
   bot.catch((e) => {
     console.error('[UNHANDLED APP ERROR]', e)
   })
 
-  // Start bot
   await bot.init()
 
   run(bot)

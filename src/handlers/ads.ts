@@ -18,12 +18,12 @@ const adsMessage = router.route('adsMessage')
 adsMessage.on(
   'message:text',
   commandWrapper(async (ctx) => {
-    console.log('kek,')
+    const message = ctx.message?.text
     const users = await findAllUsers()
     let usersCount = 0
     for (const user of users) {
       try {
-        await bot.api.sendMessage(user.id as number, 'lol', {
+        await bot.api.sendMessage(user.id as number, message ?? '', {
           parse_mode: 'HTML',
         })
         usersCount++
