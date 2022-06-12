@@ -2,7 +2,7 @@ import 'module-alias/register'
 import 'reflect-metadata'
 import 'source-map-support/register'
 
-import { handleAds } from '@/handlers/ads'
+import { Router } from '@grammyjs/router'
 import { handleHelp } from '@/handlers/help'
 import { handleMining } from '@/handlers/mining'
 import { handleRoadmap } from '@/handlers/roadmap'
@@ -10,6 +10,7 @@ import { handleStart } from '@/handlers/start'
 import { ignoreOld, sequentialize } from 'grammy-middlewares'
 import { run } from '@grammyjs/runner'
 import { session } from 'grammy'
+import Context from '@/models/Context'
 import attachUser from '@/middlewares/attachUser'
 import bot from '@/helpers/bot'
 import configureI18n from '@/middlewares/configureI18n'
@@ -21,6 +22,8 @@ export interface SessionData {
   step: 'idle' | 'adsMessage'
 }
 
+export const router = new Router<Context>((ctx) => ctx.session.step)
+import { handleAds } from '@/handlers/ads'
 async function runApp() {
   console.log('Starting app...')
   // Mongo
@@ -35,6 +38,7 @@ async function runApp() {
     .use(configureI18n)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     .use(session({ initial: (): SessionData => ({ step: 'idle' }) }))
+    .use(router)
     // Menus
     .use(languageMenu)
   // Commands
