@@ -1,4 +1,3 @@
-import { Message } from 'grammy/out/platform.node'
 import Context from '@/models/Context'
 
 // eslint-disable-next-line prettier/prettier

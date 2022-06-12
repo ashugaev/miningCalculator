@@ -27,3 +27,7 @@ export function findOrCreateUser(id: number) {
     }
   )
 }
+
+export function findAllUsers() {
+  return UserModel.find()
+}

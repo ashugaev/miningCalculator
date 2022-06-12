@@ -1,6 +1,7 @@
 import { ALLOWED_COINS, ALLOWED_COINS_STRING } from '@/constants'
 import { calcMiningProfitInDollars } from '@/helpers/calcMiningProfitInDollars'
 import { commandWrapper } from '@/helpers/commandWrapper'
+import { createMiningQuery } from '@/models/MiningQuery'
 import { getCachedMiningData } from '@/helpers/getCachedMiningData'
 import Context from '@/models/Context'
 import sendOptions from '@/helpers/sendOptions'
@@ -53,7 +54,7 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
     SECONDS_IN.month
   )
 
-  return ctx.reply(
+  await ctx.reply(
     ctx.i18n.t('miningResult', {
       dayProfit,
       weekProfit,
@@ -62,4 +63,11 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
     }),
     sendOptions(ctx)
   )
+
+  await createMiningQuery({
+    userId: ctx.dbuser.id,
+    coin: ticker,
+    hash: megaHashCount * 1000000,
+    profit: dayProfit,
+  })
 })
