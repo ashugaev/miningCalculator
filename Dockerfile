@@ -2,11 +2,11 @@ FROM node:16.14.0
 
 WORKDIR /app
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm ci
 
-COPY . .
+COPY ./ ./
 
 ARG TELEGRAM
 ARG MONGO
