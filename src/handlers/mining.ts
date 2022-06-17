@@ -36,6 +36,11 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
 
   const coinData = await getCachedMiningData(ticker)
 
+  if (!coinData) {
+    await ctx.reply(ctx.i18n.t('unrecognizedError'))
+    return
+  }
+
   const dayProfit = calcMiningProfitInDollars(
     coinData,
     megaHashCount,

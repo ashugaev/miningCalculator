@@ -8,6 +8,9 @@ export interface MiningData {
   algorithm: string
   network_hashrate: number
   difficulty: number
+  /**
+   * Reward for one hash for one hour
+   */
   reward: number
   reward_unit: string
   reward_block: number

@@ -1,4 +1,5 @@
-// TODO: подставить типы монеты
+import { MiningData } from '@/api/getMiningData'
+
 /**
  * @param {coinsData} - data from api
  * @param {hashCount} - Mega Hash count from user massage
@@ -7,18 +8,12 @@
  * @returns - number of dollars ($)
  */
 export const calcMiningProfitInDollars = (
-  coinsData: any,
+  coinsData: MiningData,
   megaHashCount: number,
   seconds: number
 ): number => {
-  const networkHashRateSha256 = (coinsData.difficulty * Math.pow(2, 32)) / 144
+  const oneSecondIncome =
+    (coinsData.reward * megaHashCount * 1000000 * coinsData.price) / 60 / 60
 
-  // const networkHashRateSha256 = 216000000000000000000;
-
-  const megaHashForATimePeriod = megaHashCount * seconds
-  const hashForATimePeriod = megaHashForATimePeriod * 1000000
-  const revenueInCrypto = hashForATimePeriod / networkHashRateSha256
-  const revenueInDollars = revenueInCrypto * coinsData.price
-  const revenuePrecise = Number(revenueInDollars.toFixed(2))
-  return revenuePrecise
+  return oneSecondIncome * seconds
 }
