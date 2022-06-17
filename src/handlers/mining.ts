@@ -21,6 +21,10 @@ export const COIN_UNITS = {
     units: 'MH/s',
     multiplier: 1000000,
   },
+  DOGE: {
+    units: 'MH/s',
+    multiplier: 1000000,
+  },
   ETH: {
     units: 'MH/s',
     multiplier: 1000000,
@@ -56,26 +60,56 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
     return
   }
 
-  const dayProfit = calcMiningProfitInDollars(
+  let dayProfit = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
     SECONDS_IN.day,
     ticker
   )
 
-  const weekProfit = calcMiningProfitInDollars(
+  let weekProfit = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
     SECONDS_IN.week,
     ticker
   )
 
-  const monthProfit = calcMiningProfitInDollars(
+  let monthProfit = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
     SECONDS_IN.month,
     ticker
   )
+
+  if (ticker === 'LTC') {
+    const dogeCoin = await getCachedMiningData('DOGE')
+
+    if (!dogeCoin) {
+      await ctx.reply(ctx.i18n.t('unrecognizedError'))
+      return
+    }
+
+    dayProfit += calcMiningProfitInDollars(
+      dogeCoin,
+      megaHashCount,
+      SECONDS_IN.day,
+      'DOGE'
+    )
+
+    weekProfit += calcMiningProfitInDollars(
+      dogeCoin,
+      megaHashCount,
+      SECONDS_IN.week,
+      'DOGE'
+    )
+
+    monthProfit += calcMiningProfitInDollars(
+      dogeCoin,
+      megaHashCount,
+      SECONDS_IN.month,
+      'DOGE'
+    )
+  }
 
   await ctx.reply(
     ctx.i18n.t('miningResult', {
