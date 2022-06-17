@@ -15,5 +15,5 @@ export const calcMiningProfitInDollars = (
   const oneSecondIncome =
     (coinsData.reward * megaHashCount * 1000000 * coinsData.price) / 60 / 60
 
-  return oneSecondIncome * seconds
+  return Number((oneSecondIncome * seconds).toFixed(2))
 }
