@@ -15,7 +15,7 @@ const SECONDS_IN = {
 export const COIN_UNITS = {
   BTC: {
     units: 'TH/s',
-    multiplier: 1000000000,
+    multiplier: 1000000000000,
   },
   LTC: {
     units: 'MH/s',
