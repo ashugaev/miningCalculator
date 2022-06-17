@@ -35,9 +35,9 @@ miningCoinError: |
 miningResult: |
   💸 На вычислительной мощности <b> ${megaHashCount} MH/s </b> ты получишь доход:
   
-  1️⃣ 24 часа - <b> ${dayProfit} </b>
-  2️⃣ Неделя - <b> ${weekProfit} </b>
-  3️⃣ Месяц - <b> ${monthProfit} </b>
+  1️⃣ 24 часа - <b>${dayProfit}$</b>
+  2️⃣ Неделя - <b>${weekProfit}$</b>
+  3️⃣ Месяц - <b>${monthProfit}$</b>
 
 adsMessagesSent: |
   Отправлено сообщений: ${usersCount}
