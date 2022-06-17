@@ -89,32 +89,38 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
       return
     }
 
-    dayProfit += calcMiningProfitInDollars(
+    const dogeDayProfit = calcMiningProfitInDollars(
       dogeCoin,
       megaHashCount,
       SECONDS_IN.day,
       'DOGE'
     )
 
-    dayProfit = Number(dayProfit.toFixed(2))
+    console.log('dogeDayProfit', dogeDayProfit, 'dayProfit', dayProfit)
 
-    weekProfit += calcMiningProfitInDollars(
+    dayProfit = Number((dayProfit + dogeDayProfit).toFixed(2))
+
+    const dogeWeekProfit = calcMiningProfitInDollars(
       dogeCoin,
       megaHashCount,
       SECONDS_IN.week,
       'DOGE'
     )
 
-    weekProfit = Number(weekProfit.toFixed(2))
+    console.log('dogeWeekProfit', dogeWeekProfit, 'weekProfit', weekProfit)
 
-    monthProfit += calcMiningProfitInDollars(
+    weekProfit = Number((weekProfit + dogeWeekProfit).toFixed(2))
+
+    const dogeMonthProfit = calcMiningProfitInDollars(
       dogeCoin,
       megaHashCount,
       SECONDS_IN.month,
       'DOGE'
     )
 
-    monthProfit = Number(monthProfit.toFixed(2))
+    console.log('dogeMonthProfit', dogeWeekProfit, 'monthProfit', monthProfit)
+
+    monthProfit = Number((monthProfit + dogeMonthProfit).toFixed(2))
   }
 
   await ctx.reply(
