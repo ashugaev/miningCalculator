@@ -85,7 +85,7 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
       megaHashCount,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      unit: COIN_UNITS[ticker].multiplier,
+      units: COIN_UNITS[ticker].units,
     }),
     sendOptions(ctx)
   )
