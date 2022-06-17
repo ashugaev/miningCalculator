@@ -96,6 +96,8 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
       'DOGE'
     )
 
+    dayProfit = Number(dayProfit.toFixed(2))
+
     weekProfit += calcMiningProfitInDollars(
       dogeCoin,
       megaHashCount,
@@ -103,12 +105,16 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
       'DOGE'
     )
 
+    weekProfit = Number(weekProfit.toFixed(2))
+
     monthProfit += calcMiningProfitInDollars(
       dogeCoin,
       megaHashCount,
       SECONDS_IN.month,
       'DOGE'
     )
+
+    monthProfit = Number(monthProfit.toFixed(2))
   }
 
   await ctx.reply(
