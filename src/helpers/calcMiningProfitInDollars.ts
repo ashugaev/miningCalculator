@@ -1,3 +1,4 @@
+import { COIN_UNITS } from '@/handlers/mining'
 import { MiningData } from '@/api/getMiningData'
 
 /**
@@ -10,10 +11,18 @@ import { MiningData } from '@/api/getMiningData'
 export const calcMiningProfitInDollars = (
   coinsData: MiningData,
   megaHashCount: number,
-  seconds: number
+  seconds: number,
+  ticker: string
 ): number => {
   const oneSecondIncome =
-    (coinsData.reward * megaHashCount * 1000000 * coinsData.price) / 60 / 60
+    (coinsData.reward *
+      megaHashCount *
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      COIN_UNITS[ticker].multiplier *
+      coinsData.price) /
+    60 /
+    60
 
   return Number((oneSecondIncome * seconds).toFixed(2))
 }

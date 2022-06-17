@@ -12,6 +12,21 @@ const SECONDS_IN = {
   month: 24 * 60 * 60 * 30,
 }
 
+export const COIN_UNITS = {
+  BTC: {
+    units: 'TH/s',
+    multiplier: 1000000000,
+  },
+  LTC: {
+    units: 'MH/s',
+    multiplier: 1000000,
+  },
+  ETH: {
+    units: 'MH/s',
+    multiplier: 1000000,
+  },
+}
+
 export const handleMining = commandWrapper(async (ctx: Context) => {
   const text = ctx.message?.text
 
@@ -44,19 +59,22 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
   const dayProfit = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
-    SECONDS_IN.day
+    SECONDS_IN.day,
+    ticker
   )
 
   const weekProfit = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
-    SECONDS_IN.week
+    SECONDS_IN.week,
+    ticker
   )
 
   const monthProfit = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
-    SECONDS_IN.month
+    SECONDS_IN.month,
+    ticker
   )
 
   await ctx.reply(
@@ -65,6 +83,9 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
       weekProfit,
       monthProfit,
       megaHashCount,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      unit: COIN_UNITS[ticker].multiplier,
     }),
     sendOptions(ctx)
   )
