@@ -60,74 +60,36 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
     return
   }
 
-  let dayProfit = calcMiningProfitInDollars(
+  const [dayProfitDollars, dayProfitCrypto] = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
     SECONDS_IN.day,
     ticker
   )
 
-  let weekProfit = calcMiningProfitInDollars(
+  const [weekProfitDollars, weekProfitCrypto] = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
     SECONDS_IN.week,
     ticker
   )
 
-  let monthProfit = calcMiningProfitInDollars(
+  const [monthProfitDollars, monthProfitCrypto] = calcMiningProfitInDollars(
     coinData,
     megaHashCount,
     SECONDS_IN.month,
     ticker
   )
 
-  if (ticker === 'LTC') {
-    const dogeCoin = await getCachedMiningData('DOGE')
-
-    if (!dogeCoin) {
-      await ctx.reply(ctx.i18n.t('unrecognizedError'))
-      return
-    }
-
-    const dogeDayProfit = calcMiningProfitInDollars(
-      dogeCoin,
-      megaHashCount,
-      SECONDS_IN.day,
-      'DOGE'
-    )
-
-    console.log('dogeDayProfit', dogeDayProfit, 'dayProfit', dayProfit)
-
-    dayProfit = Number((dayProfit + dogeDayProfit).toFixed(2))
-
-    const dogeWeekProfit = calcMiningProfitInDollars(
-      dogeCoin,
-      megaHashCount,
-      SECONDS_IN.week,
-      'DOGE'
-    )
-
-    console.log('dogeWeekProfit', dogeWeekProfit, 'weekProfit', weekProfit)
-
-    weekProfit = Number((weekProfit + dogeWeekProfit).toFixed(2))
-
-    const dogeMonthProfit = calcMiningProfitInDollars(
-      dogeCoin,
-      megaHashCount,
-      SECONDS_IN.month,
-      'DOGE'
-    )
-
-    console.log('dogeMonthProfit', dogeWeekProfit, 'monthProfit', monthProfit)
-
-    monthProfit = Number((monthProfit + dogeMonthProfit).toFixed(2))
-  }
-
   await ctx.reply(
     ctx.i18n.t('miningResult', {
-      dayProfit,
-      weekProfit,
-      monthProfit,
+      dayProfitDollars,
+      dayProfitCrypto,
+      weekProfitDollars,
+      weekProfitCrypto,
+      monthProfitDollars,
+      monthProfitCrypto,
+      ticker,
       megaHashCount,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -140,6 +102,6 @@ export const handleMining = commandWrapper(async (ctx: Context) => {
     userId: ctx.dbuser.id,
     coin: ticker,
     hash: megaHashCount * 1000000,
-    profit: dayProfit,
+    profit: dayProfitDollars,
   })
 })

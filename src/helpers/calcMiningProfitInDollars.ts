@@ -13,16 +13,21 @@ export const calcMiningProfitInDollars = (
   megaHashCount: number,
   seconds: number,
   ticker: string
-): number => {
-  const oneSecondIncome =
-    (coinsData.reward *
+): [number, number] => {
+  const oneSecondIncomeCrypto =
+    ((coinsData.reward *
       megaHashCount *
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      COIN_UNITS[ticker].multiplier *
-      coinsData.price) /
-    60 /
-    60
+      COIN_UNITS[ticker].multiplier) /
+      60 /
+      60) *
+    seconds
 
-  return Number((oneSecondIncome * seconds).toFixed(2))
+  const incomeDollars = oneSecondIncomeCrypto * coinsData.price
+
+  return [
+    Number(incomeDollars.toFixed(2)),
+    Number(oneSecondIncomeCrypto.toFixed(4)),
+  ]
 }
